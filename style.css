@@ -1,0 +1,87 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+.view{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-width: 100vw;
+}
+.gameboard{
+    display: grid;
+    grid-template:1fr 1fr 1fr / 1fr 1fr 1fr;
+    gap: 5px;
+    height: 50vh;
+    width: 50vh;
+    background-color: black;
+}
+.header{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    min-height: 20vh;
+    width: 100%;
+    background-image: url(images/image.jpeg);
+}
+.header .btn{
+    padding: 5px 50px;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 35px;
+    background-color: red;
+    border-radius: 4px;
+    box-shadow: 5px 5px;
+
+}
+.btn:active{
+    box-shadow: 2px 2px;
+}
+.mid_section{
+    display: flex;
+    justify-content: center;
+    padding: 25px;
+}
+.player{
+    align-self: start;
+    padding: 25px;
+}
+#player2, #player2_count{
+    text-align: right;
+}
+.count{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 25px;
+}
+
+.content{
+    min-width: 100vw;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image:url(images/bg.jpg);
+    background-size: auto;
+}
+.cell{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #fff url(images/bg.jpg) left top;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+img{
+    width: 50px;
+}
+.player_name{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 40px;
+}

@@ -4,10 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     
+    <div class="view">
+        <div class="header">
+            <div class="player" id="player1_div">
+                <div class="player_name" id="player1">Player 1</div>
+                <div class="count" id="player1_count">0</div>
+            </div>
+            <div class="mid_section">
+                <button class="btn" id="restart">Restart</button>
+            </div>
+            <div class="player" id="player2_div">
+                <div class="player_name" id="player2">Player 2</div>
+                <div class="count" id="player2_count">0</div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="gameboard">
+                <div class="cell" id="0"></div>
+                <div class="cell" id="1"></div>
+                <div class="cell" id="2"></div>
+                <div class="cell" id="3"></div>
+                <div class="cell" id="4"></div>
+                <div class="cell" id="5"></div>
+                <div class="cell" id="6"></div>
+                <div class="cell" id="7"></div>
+                <div class="cell" id="8"></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

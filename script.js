@@ -1,94 +1,160 @@
 const gameboard=(function(){
-    let board=[
-                ["","",""],
-                ["x","","x"],
-                ["x","x",""]]
-    const displayBoard=() =>{
-        let boardDisplay=""
-        for(let i=0;i<board.length;i++)
-        {
-            for(let k=0;k<board[i].length;k++)
+    let nextMarker="x"
+    const nodeList=document.querySelectorAll(".cell")
+    nodeList.forEach((node)=>{
+        node.addEventListener("click",(e)=>{
+            if(node.innerHTML=="")
             {
-                boardDisplay+=k!=2?board[i][k]+"|":board[i][k]
+                const tile=document.createElement("img")
+                if(nextMarker=="x"){
+                    tile.setAttribute("src","images/x.png")
+                    tile.style.width="50px"
+                }else if(nextMarker=="o"){
+                    tile.setAttribute("src","images/circle.png")
+                    tile.style.width="50px"
+                }
+                node.appendChild(tile)
+                addTile(nextMarker,node.id)
+                game.changeState()
             }
-            boardDisplay+=i!=2?"\n-----\n":""
-        }
-        return boardDisplay;
-    };
-    const addTile=(marker,tileRow,tileColum)=>{
-        board[tileColum][tileRow]=marker
+            
+        })
+    })
+    let board={"0":"","1":"","2":"",
+                "3":"","4":"","5":"",
+                "6":"","7":"","8":""
     }
-    const checkScenarioRow=(i)=>{
-        
+    const clearBoard=()=>{
+        for(let[key,value] in Object.entries(board))
+        {
+            board[key]=""
+        }
+        nodeList.forEach((node)=>{
+            node.innerHTML=""
+        })
+        nextMarker="x"
+    }
+    const addTile=(marker,index)=>{
+        board[index]=marker
+        console.log(board)
+    }
+    const changeMarker=(next)=>{
+        nextMarker=next
     }
     const checkIfWon=(marker)=>{
-        for(let i=0;i<board.length;i++)
-        {
-            for(let k=0;k<board[i].length;k++)
-            {
-                switch(k){
-                    case 0:
-                       if(i==0 && board[i][k]==marker){
-                        if(board[1][0]==board[i][k]&&board[2][0]==board[i][k])
-                            return true
-                        else if(board[1][1]==board[i][k]&&board[2][2]==board[i][k])
-                            return true
-                        else if(board[0][1]==board[i][k]&&board[0][2]==board[i][k])
-                            return true
-                       }
-                       else if(i==1 && board[i][k]==marker){
-                        if(board[0][0]==board[i][k]&&board[2][0]==board[i][k])
-                            return true
-                        else if(board[1][1]==board[i][k]&&board[1][2]==board[i][k])
-                            return true
-                        
+        if(board["0"]==marker && board["1"]==marker && board["2"]==marker){
+            return true
+        }
+        else if(board["3"]==marker && board["4"]==marker && board["5"]==marker){
+            return true
+        }
+        else if(board["6"]==marker && board["7"]==marker && board["8"]==marker){
+            return true
+        }
+        else if(board["0"]==marker && board["3"]==marker && board["6"]==marker){
+            return true
+        }
+        else if(board["1"]==marker && board["4"]==marker && board["7"]==marker){
+            return true
+        }
+        else if(board["2"]==marker && board["5"]==marker && board["8"]==marker){
+            return true
+        }
+        else if(board["0"]==marker && board["4"]==marker && board["8"]==marker){
+            return true
+        }
+        else if(board["6"]==marker && board["4"]==marker && board["2"]==marker){
+            return true
+        }
+        else
+            return false
+    }
+    return {changeMarker,checkIfWon,clearBoard}
+})();
 
-                       }
-                       else if(i==2 && board[i][k]==marker){
-                        if(board[0][0]==board[i][k]&&board[1][0]==board[i][k])
-                            return true
-                        else if(board[1][1]==board[i][k]&&board[2][0]==board[i][k])
-                            return true
-                        else if(board[1][1]==board[i][k]&&board[0][2]==board[i][k])
-                            return true
-                       }
+const game=(function(){
+    const player1=Player("x","player1")
+    const player2=Player("o","player2")
+    let nextMarker=player1.marker
+    const resetButton=document.querySelector("#restart")
+    const changeState=()=>{
+        console.log(gameboard.checkIfWon(nextMarker))
+        if(gameboard.checkIfWon(nextMarker)){
+            switch (nextMarker){
+                case player1.marker:
+                    player1.addPoints()
+                    alert(`Player ${player1.getName()} won`)
+                    gameboard.clearBoard()
+                    return ""
                     break
-                    case 1:
-                        if(i==0 && board[i][k]==marker){
-                            if(board[1][1]==board[i][k]&&board[2][1]==board[i][k])
-                                return true
-                           }
-                           else if(i==1 && board[i][k]==marker){
-                            if(board[0][0]==board[i][k]&&board[2][0]==board[i][k])
-                                return true
-                            else if(board[1][0]==board[i][k]&&board[1][2]==board[i][k])
-                                return true
-    
-                           }
-                           else if(i==2 && board[i][k]==marker){
-                            if(board[0][0]==board[i][k]&&board[1][0]==board[i][k])
-                                return true
-                            else if(board[1][1]==board[i][k]&&board[2][0]==board[i][k])
-                                return true
-                            else if(board[i][1]==board[i][k]&&board[i][2]==board[i][k])
-                                return true
-    
-                           }
+                case player2.marker:
+                    player2.addPoints()
+                    alert(`Player ${player2.getName()} has won`)
+                    gameboard.clearBoard()
+                    return ""
                     break
-                    case 2:
-                        if(board[i][k]==marker&&board[i][k]==board[1][2]&&board[i][k]==board[2][2])
-                        {
-                            return true
-                        }
-                    break
-                }
             }
         }
-        return false
+        if(nextMarker!=player1.marker){
+            nextMarker=player1.marker
+            gameboard.changeMarker(nextMarker)
+        }
+        else if(nextMarker!=player2.marker){
+            nextMarker=player2.marker
+            gameboard.changeMarker(nextMarker)
+        }
     }
-    return {displayBoard,addTile,checkIfWon}
-})();
+    resetButton.addEventListener("click",(e)=>{
+        player1.resetPoints()
+        player2.resetPoints()
+        gameboard.clearBoard()
+    })
+    return{changeState}
+})()
 function Player(marker,name){
-    return{marker,name}
+    let points=0
+
+    const playerScore=document.querySelector(`#${name}_count`)
+    const playerNamePlate=document.querySelector(`#${name}`)
+    playerNamePlate.addEventListener("dblclick",(e)=>{
+        playerNamePlate.contentEditable=true
+    })
+    playerNamePlate.addEventListener("blur",(e)=>{
+        if(playerNamePlate.innerHTML!="")
+        {
+            close()
+        }
+        else{
+            alert("Need a name")
+        }
+    })
+    playerNamePlate.addEventListener("keypress",(e)=>{
+        if(e.key==="Enter"){
+            if(playerNamePlate.innerHTML!="")
+                close()
+            else{
+                    alert("Need a name")
+                }
+        }
+        
+    })
+    function close(){
+        name=playerNamePlate.innerHTML
+        playerNamePlate.contentEditable=false
+    }
+    const addPoints=()=>{
+        points+=1
+        playerScore.innerHTML=points
+    }
+    const getPoints=()=>{
+        return points
+    }
+    const resetPoints=()=>{
+        points=0
+        playerScore.innerHTML="0"
+    }
+    const getName=()=>{
+        return name
+    }
+    return{getName,marker,addPoints,getPoints,resetPoints}
 }
-console.log(gameboard.checkIfWon("x"))
